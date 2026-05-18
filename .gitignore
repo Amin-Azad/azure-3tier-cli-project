@@ -1,0 +1,30 @@
+# Secrets
+*.pem
+*.key
+*.pfx
+*.p12
+.env
+.env.*
+secrets.sh
+credentials.json
+
+# Azure CLI state
+.azure/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+terraform.tfvars
+
+# Bicep parameters
+*.parameters.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+*.swp
