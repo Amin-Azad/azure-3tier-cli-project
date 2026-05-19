@@ -1,0 +1,69 @@
+Starting full deployment....
+Variables loaded for project: 3tier, environment: dev, location: westeurope
+Resource group 'rg-3tier-dev' already exist - skipping
+Variables loaded for project: 3tier, environment: dev, location: westeurope
+Subnet     CIDR         NSG
+---------  -----------  ----------------------------------------------------------------------------------------------------------------------------------------------
+snet-web   10.0.1.0/24  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-web-dev
+snet-app   10.0.2.0/24  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-app-dev
+snet-data  10.0.3.0/24  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-data-dev
+snet-mgmt  10.0.4.0/24  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-mgmt-dev
+Variables loaded for project: 3tier, environment: dev, location: westeurope
+Creating Public IP for Load Balancer
+Creating Load Balancer
+Creating Health Probe
+Creating Load Balancing Rule
+Creating Web VM
+Installing Nginx on Web VM
+Creating App VM
+Adding Web VM NIC to Load Balancer Backend Pool
+Compute resources created successfully.
+Variables loaded for project: 3tier, environment: dev, location: westeurope
+Storage Account create 
+Enabling Blob Protection
+Storage Account Key
+Blob Containers create
+Container created or already exists: assets
+Container created or already exists: logs
+Container created or already exists: backups
+Azure File Share create
+Uploading Sample HTML File
+Generating Read-Only SAS Token for assets container
+SAS token generated. Expiry: 2026-05-19T22:47Z
+Do not commit SAS token to GitHub.
+Storage Summary
+Name          Location    SKU
+------------  ----------  ------------
+st3tierdev01  westeurope  Standard_LRS
+Storage resources created successfully.
+Variables loaded for project: 3tier, environment: dev, location: westeurope
+Creating Security Group
+Group ID: 722ae55a-fd52-455b-91cf-25b60962cc3a
+Creating User Assigned Managed Identity
+Managed Identity Principal ID: 44fa50c4-14db-4c16-95f7-573204ed7520
+Assigning Storage Blob Data Contributor
+Assigning Reader Role to CloudAdmins Group
+IAM configuration completed successfully.
+Variables loaded for project: 3tier, environment: dev, location: westeurope
+Creating Log Analytics Workspace
+diagnostics seeting enable for Storage Account
+diagnostics setting enable for Load Balancer
+Monitoring setup completed
+Name           Location    ResourceGroup
+-------------  ----------  ---------------
+law-3tier-dev  westeurope  rg-3tier-dev
+Variables loaded for project: 3tier, environment: dev, location: westeurope
+Creating Recovery Services Vault
+Creating Backup Policy
+Getting VM Resource IDs
+Checking backup protection for vm-web-dev
+Backup already enabled for vm-web-dev - skipping
+Checking backup protection for vm-app-dev
+Backup already enabled for vm-app-dev - skipping
+Backup protected items
+Name                                          Friendly Name    Container name                             Resource Group    Type    Last Backup Status    Protection Status    Health Status
+--------------------------------------------  ---------------  -----------------------------------------  ----------------  ------  --------------------  -------------------  ---------------
+VM;iaasvmcontainerv2;rg-3tier-dev;vm-app-dev  vm-app-dev       iaasvmcontainerv2;rg-3tier-dev;vm-app-dev  rg-3tier-dev      VM                            Healthy              Passed
+VM;iaasvmcontainerv2;rg-3tier-dev;vm-web-dev  vm-web-dev       iaasvmcontainerv2;rg-3tier-dev;vm-web-dev  rg-3tier-dev      VM                            Healthy              Passed
+Backup configuration completed.
+deployment competed

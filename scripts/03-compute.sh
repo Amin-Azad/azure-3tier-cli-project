@@ -5,7 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/00-variables.sh"
 
-echo "=== Creating Public IP for Load Balancer ==="
+echo "Creating Public IP for Load Balancer"
 
 az network public-ip create \
   --resource-group "$RG_NAME" \
@@ -16,7 +16,7 @@ az network public-ip create \
   --tags "$TAGS" \
   --output none
 
-echo "=== Creating Load Balancer ==="
+echo "Creating Load Balancer"
 
 az network lb create \
   --resource-group "$RG_NAME" \
@@ -29,7 +29,7 @@ az network lb create \
   --tags "$TAGS" \
   --output none
 
-echo "=== Creating Health Probe ==="
+echo "Creating Health Probe"
 
 az network lb probe create \
   --resource-group "$RG_NAME" \
@@ -39,7 +39,7 @@ az network lb probe create \
   --port 80 \
   --output none
 
-echo "=== Creating Load Balancing Rule ==="
+echo "Creating Load Balancing Rule"
 
 az network lb rule create \
   --resource-group "$RG_NAME" \
@@ -53,7 +53,7 @@ az network lb rule create \
   --probe-name HealthProbe80 \
   --output none
 
-echo "=== Creating Web VM ==="
+echo "Creating Web VM"
 
 az vm create \
   --resource-group "$RG_NAME" \
@@ -69,7 +69,7 @@ az vm create \
   --tags "$TAGS" \
   --output none
 
-echo "=== Installing Nginx on Web VM ==="
+echo "Installing Nginx on Web VM"
 
 az vm extension set \
   --resource-group "$RG_NAME" \
@@ -79,7 +79,7 @@ az vm extension set \
   --settings '{"commandToExecute": "sudo apt-get update && sudo apt-get install -y nginx && sudo systemctl enable nginx && sudo systemctl start nginx"}' \
   --output none
 
-echo "=== Creating App VM ==="
+echo "Creating App VM"
 
 az vm create \
   --resource-group "$RG_NAME" \
@@ -95,7 +95,7 @@ az vm create \
   --tags "$TAGS" \
   --output none
 
-echo "=== Adding Web VM NIC to Load Balancer Backend Pool ==="
+echo "Adding Web VM NIC to Load Balancer Backend Pool"
 
 WEB_NIC_ID=$(az vm show \
   --resource-group "$RG_NAME" \

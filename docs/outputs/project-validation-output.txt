@@ -1,0 +1,171 @@
+Variables loaded for project: 3tier, environment: dev, location: westeurope
+-----------
+ Azure 3-Tier CLI Project - Validation Report
+------------------
+Project: 3tier
+Environment: dev
+Location: westeurope
+Resource Group: rg-3tier-dev
+Generated on: Tue May 19 23:33:18 CEST 2026
+------------------
+
+1. ----------Resource Group---------------------
+
+Name          Location    ProvisioningState
+------------  ----------  -------------------
+rg-3tier-dev  westeurope  Succeeded
+
+2. ---------------All Resources in the Resource Group------------------------------
+
+Name                                                  Type                                              Location
+----------------------------------------------------  ------------------------------------------------  ----------
+vnet-3tier-dev                                        Microsoft.Network/virtualNetworks                 westeurope
+nsg-web-dev                                           Microsoft.Network/networkSecurityGroups           westeurope
+nsg-app-dev                                           Microsoft.Network/networkSecurityGroups           westeurope
+nsg-data-dev                                          Microsoft.Network/networkSecurityGroups           westeurope
+nsg-mgmt-dev                                          Microsoft.Network/networkSecurityGroups           westeurope
+pip-lb-dev                                            Microsoft.Network/publicIPAddresses               westeurope
+lb-web-dev                                            Microsoft.Network/loadBalancers                   westeurope
+vm-web-devVMNic                                       Microsoft.Network/networkInterfaces               westeurope
+vm-web-dev                                            Microsoft.Compute/virtualMachines                 westeurope
+vm-web-dev_OsDisk_1_0bdd80625f3b4b38a6d71976ede5534d  Microsoft.Compute/disks                           westeurope
+vm-app-devVMNic                                       Microsoft.Network/networkInterfaces               westeurope
+vm-app-dev                                            Microsoft.Compute/virtualMachines                 westeurope
+vm-app-dev_OsDisk_1_1c32fc1c0f8248048051d6dc8f1dc8ae  Microsoft.Compute/disks                           westeurope
+vm-web-dev/customScript                               Microsoft.Compute/virtualMachines/extensions      westeurope
+st3tierdev01                                          Microsoft.Storage/storageAccounts                 westeurope
+id-3tier-dev                                          Microsoft.ManagedIdentity/userAssignedIdentities  westeurope
+law-3tier-dev                                         Microsoft.OperationalInsights/workspaces          westeurope
+rsv-3tier-dev                                         Microsoft.RecoveryServices/vaults                 westeurope
+
+3.------------------ Virtual Network----------------------------------
+
+Name            Location    AddressSpace
+--------------  ----------  --------------
+vnet-3tier-dev  westeurope  10.0.0.0/16
+
+4. -------------------------Subnets-----------------------------
+
+Name       AddressPrefix    NSG
+---------  ---------------  ----------------------------------------------------------------------------------------------------------------------------------------------
+snet-web   10.0.1.0/24      /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-web-dev
+snet-app   10.0.2.0/24      /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-app-dev
+snet-data  10.0.3.0/24      /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-data-dev
+snet-mgmt  10.0.4.0/24      /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-mgmt-dev
+
+5. --------------------------Network Security Groups---------------
+
+Name          Location
+------------  ----------
+nsg-app-dev   westeurope
+nsg-data-dev  westeurope
+nsg-mgmt-dev  westeurope
+nsg-web-dev   westeurope
+
+6. --------------------------Public IP Addresses--------------------------
+
+Name        IP              SKU       Allocation
+----------  --------------  --------  ------------
+pip-lb-dev  20.126.129.201  Standard  Static
+
+7. -------------------Load Balancer------------------------------
+
+Name        Location    SKU
+----------  ----------  --------
+lb-web-dev  westeurope  Standard
+
+8. ------------------Load Balancer Backend Pools------------------------------
+
+Name
+------------
+backendpool1
+
+9.--------------------- Virtual Machines-----------------------------
+
+Name        PowerState    PrivateIP    PublicIP    Size               Location
+----------  ------------  -----------  ----------  -----------------  ----------
+vm-app-dev  VM running    10.0.2.4                 Standard_D2lds_v6  westeurope
+vm-web-dev  VM running    10.0.1.4                 Standard_D2lds_v6  westeurope
+
+10. ----------------------Storage Account---------------------------
+
+Name          Location    SKU           Kind       HTTPSOnly    MinTLS
+------------  ----------  ------------  ---------  -----------  --------
+st3tierdev01  westeurope  Standard_LRS  StorageV2  True         TLS1_2
+
+11. ------------------------Blob Containers
+-
+Name
+-------
+assets
+backups
+logs
+uploads
+
+12.---------------------- Azure File Shares------------------------------
+
+Name
+--------
+appshare
+
+13. --------------------------Managed Identity-----------------------------
+
+Name          Location    PrincipalId
+------------  ----------  ------------------------------------
+id-3tier-dev  westeurope  44fa50c4-14db-4c16-95f7-573204ed7520
+
+14. ------------------IAM / RBAC Role Assignments--------
+
+Principal    Role
+-----------  ------
+CloudAdmins  Reader
+
+15.------------------- Log Analytics Workspace -------------
+
+Name           Location    RetentionDays
+-------------  ----------  ---------------
+law-3tier-dev  westeurope  30
+
+16. ----------------Storage Diagnostic Settings-----------------------
+
+Name               WorkspaceId
+-----------------  ------------------------------------------------------------------------------------------------------------------------------------------------
+diag-st3tierdev01  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.OperationalInsights/workspaces/law-3tier-dev
+
+17. --------------------Load Balancer Diagnostic Settings----------------------------
+
+Name             WorkspaceId
+---------------  ------------------------------------------------------------------------------------------------------------------------------------------------
+diag-lb-web-dev  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.OperationalInsights/workspaces/law-3tier-dev
+
+18. ---------------------Recovery Services Vault----------------------
+
+Name           Location    ResourceGroup
+-------------  ----------  ---------------
+rsv-3tier-dev  westeurope  rg-3tier-dev
+
+19. ----------------Backup Policies----------------------
+
+Name              BackupManagementType
+----------------  ----------------------
+HourlyLogBackup   AzureWorkload
+DefaultPolicy     AzureIaasVM
+policy-3tier-dev  AzureIaasVM
+EnhancedPolicy    AzureIaasVM
+
+20. -----------------Backup Protected Items-----------------
+
+VM          ProtectionStatus    HealthStatus
+----------  ------------------  --------------
+vm-app-dev  Healthy             Passed
+vm-web-dev  Healthy             Passed
+
+21. ------------------------Resource Locks---------------------
+
+Name               Level
+-----------------  ------------
+lock-rg-3tier-dev  CanNotDelete
+
+
+ **************************Validation completed successfully****************************8
+
