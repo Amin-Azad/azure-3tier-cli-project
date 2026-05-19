@@ -37,6 +37,7 @@ export SNET_DATA_CIDR="10.0.3.0/24"
 export SNET_MGMT_CIDR="10.0.4.0/24"
 
 # Admin user for VMs
+export IDENTITY_NAME="id-3tier-dev"
 export ADMIN_USER="azureuser"
 
 #public IP for SSH access
