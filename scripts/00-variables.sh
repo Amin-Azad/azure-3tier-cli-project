@@ -18,6 +18,7 @@ export NSG_DATA="nsg-data-${ENVIRONMENT}"
 export NSG_MGMT="nsg-mgmt-${ENVIRONMENT}"
 
 #VM
+export VM_SIZE="Standard_D2lds_v6"
 export VM_WEB="vm-web-${ENVIRONMENT}"
 export VM_APP="vm-app-${ENVIRONMENT}"
 
