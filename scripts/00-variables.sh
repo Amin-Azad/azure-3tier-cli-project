@@ -43,6 +43,12 @@ export ADMIN_USER="azureuser"
 #public IP for SSH access
 export MY_IP="$(curl -s ifconfig.me)/32"
 
+# Monitoring & Backup 
+export LAW_NAME="law-${PROJECT}-${ENVIRONMENT}"
+export DCR_NAME="dcr-${PROJECT}-${ENVIRONMENT}"
+export RSV_NAME="rsv-${PROJECT}-${ENVIRONMENT}"
+export BACKUP_POLICY_NAME="policy-${PROJECT}-${ENVIRONMENT}"
+
 # Tags
 export TAGS="environment=${ENVIRONMENT} project=${PROJECT} owner=${OWNER}"
 
