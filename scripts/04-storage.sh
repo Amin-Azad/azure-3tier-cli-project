@@ -16,7 +16,19 @@ az storage account create \
   --https-only true \
   --allow-blob-public-access false \
   --min-tls-version TLS1_2 \
-  --tags $TAGS \
+  --tags "$TAGS" \
+  --output none
+
+echo "Enabling Blob Protection"
+
+az storage account blob-service-properties update \
+  --account-name "$STORAGE_NAME" \
+  --resource-group "$RG_NAME" \
+  --enable-delete-retention true \
+  --delete-retention-days 7 \
+  --enable-container-delete-retention true \
+  --container-delete-retention-days 7 \
+  --enable-versioning true \
   --output none
 
 echo "Storage Account Key"
