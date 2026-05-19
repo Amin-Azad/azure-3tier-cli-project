@@ -1,18 +1,24 @@
 # Azure 3-Tier Architecture
 
 ```mermaid
-flowchart LR
-    User[User / Internet] --> LB[Public Load Balancer]
-    LB --> WebVM[Web VM<br>vm-web-dev<br>snet-web]
-    WebVM --> AppVM[App VM<br>vm-app-dev<br>snet-app]
-    AppVM --> Storage[Storage Account<br>st3tierdev01]
+flowchart TD
+    A[User / Internet]
+    B[Public Load Balancer]
+    C[Web Tier<br>vm-web-dev<br>snet-web]
+    D[App Tier<br>vm-app-dev<br>snet-app]
+    E[Storage Tier<br>Storage Account<br>st3tierdev01]
 
-    WebVM --> Monitor[Log Analytics Workspace]
-    AppVM --> Monitor
+    A --> B
+    B --> C
+    C --> D
+    D --> E
 
-    WebVM --> Backup[Recovery Services Vault]
-    AppVM --> Backup
+    C --> F[Log Analytics Workspace]
+    D --> F
 
-    Identity[Managed Identity] --> Storage
-    RBAC[CloudAdmins Group<br>RBAC Reader Access] --> RG[Resource Group<br>rg-3tier-dev]
-    Lock[Delete Lock] --> RG
+    C --> G[Recovery Services Vault<br>VM Backup]
+    D --> G
+
+    H[Managed Identity] --> E
+    I[CloudAdmins Group<br>RBAC Reader] --> J[Resource Group<br>rg-3tier-dev]
+    K[Delete Lock] --> J
