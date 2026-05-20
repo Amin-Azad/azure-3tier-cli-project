@@ -73,7 +73,6 @@ azure-3tier-cli-project/
 │   └── tags.json
 ├── docs/
 │   ├── architecture-diagram.md
-│   ├── teardown.md
 │   ├── images/
 │   │   ├── architecture-diagram.png
 │   │   ├── deployall-output.png
@@ -83,6 +82,7 @@ azure-3tier-cli-project/
 │   └── outputs/
 │       ├── deploy-all-output.txt
 │       └── project-validation-output.txt
+|       └── clenup-output.txt
 ├── scripts/
 │   ├── 00-variables.sh
 │   ├── 01-resource-group.sh
