@@ -97,7 +97,8 @@ azure-3tier-cli-project/
 ├── deploy-all.sh
 ├── validate-project.sh
 └── README.md
-## -----------------Quick Start--------------------------
+---
+## Quick Start
 
 ## Prerequisites
 
@@ -116,7 +117,7 @@ az version
 az login
 az account show --output table
 
-### Quick Start
+### Git clone and Run 
 
 ```bash
 git clone https://github.com/Amin-Azad/azure-3tier-cli-project.git
@@ -177,6 +178,7 @@ Validation output is saved to:
 ```text
 docs/outputs/project-validation-output.txt
 
+---
 
 ## Cleanup
 
@@ -184,7 +186,7 @@ To remove all resources created by this project:
 
 ```bash
 bash scripts/teardown.sh
-
+---
 ## Skills Demonstrated
 
 - Azure CLI automation
@@ -210,7 +212,7 @@ bash scripts/teardown.sh
 - Git and GitHub
 - Technical documentation
 - Troubleshooting and problem solving
-
+---
 ## Challenges and Lessons Learned
 
 During the development of this project, several real-world challenges were encountered and resolved. These issues provided valuable hands-on experience with Azure administration, automation, and troubleshooting.
@@ -379,13 +381,13 @@ This project provided practical experience in:
 - Troubleshooting real-world Azure deployment issues
 
 Building this end-to-end three-tier Azure environment significantly strengthened my hands-on skills as an Azure Administrator and aspiring Cloud Engineer.
-
+---
 ## Future Improvements
 - Convert the deployment to Bicep
 - Add Azure Bastion
 - Integrate Azure Key Vault
 - Add CI/CD with GitHub Actions
-
+---
 
 ## Author
 
