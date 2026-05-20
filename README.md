@@ -97,6 +97,7 @@ azure-3tier-cli-project/
 ├── deploy-all.sh
 ├── validate-project.sh
 └── README.md
+```
 ---
 ## Quick Start
 
