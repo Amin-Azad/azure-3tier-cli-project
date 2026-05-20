@@ -26,17 +26,17 @@ The solution automates networking, compute, storage, identity, monitoring, backu
 
 ### Deployment Execution
 
-![Deployment Output](docs/images/deployall-output.png)
+![Deployment Output](docs/images/deployall-output.PNG)
 
 ### Azure Portal Resource Overview
 
-![Resource Group Overview](docs/images/azure-portal-resources-overview.png)
+![Resource Group Overview](docs/images/azure-portal-resources-overview.PNG)
 
 ### Validation Report
 
-![Validation Output 1](docs/images/validation-output-1.png)
+![Validation Output 1](docs/images/validation-output-1.PNG)
 
-![Validation Output 2](docs/images/validation-output-2.png)
+![Validation Output 2](docs/images/validation-output-2.PNG)
 
 ---
 
