@@ -92,7 +92,7 @@ azure-3tier-cli-project/
 │   ├── 05-iam.sh
 │   ├── 06-monitoring.sh
 │   ├── 07-backup.sh
-│   └── teardown.sh
+│   └── cleanup.sh
 ├── .gitignore
 ├── deploy-all.sh
 ├── validate-project.sh
@@ -156,7 +156,7 @@ The `deploy-all.sh` script runs the following modules in sequence:
 | `05-iam.sh` | Creates the Microsoft Entra ID security group, managed identity, and RBAC assignments |
 | `06-monitoring.sh` | Configures Log Analytics Workspace and diagnostic settings |
 | `07-backup.sh` | Configures Recovery Services Vault and enables VM backups |
-| `teardown.sh` | Removes all project resources and cleanup dependencies |
+| `cleanup.sh` | Removes all project resources and cleanup dependencies |
 
 ---
 
@@ -186,7 +186,7 @@ docs/outputs/project-validation-output.txt
 To remove all resources created by this project:
 
 ```bash
-bash scripts/teardown.sh
+bash scripts/cleanup.sh
 ```
 ---
 ## Skills Demonstrated
