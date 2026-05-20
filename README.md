@@ -130,7 +130,7 @@ chmod +x deploy-all.sh validate-project.sh scripts/*.sh
 
 ./deploy-all.sh
 ./validate-project.sh
-
+```
 ## Deployment Workflow
 
 The `deploy-all.sh` script runs the following modules in sequence:
