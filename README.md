@@ -192,28 +192,15 @@ bash scripts/cleanup.sh
 ## Skills Demonstrated
 
 - Azure CLI automation
-- Bash scripting
-- Infrastructure as Code (IaC) principles
-- Three-tier architecture design
-- Virtual Networks (VNet) and subnet configuration
-- Network Security Groups (NSGs)
-- Azure Bastion
-- Azure Load Balancer
-- Azure Virtual Machines
-- Microsoft Entra ID and RBAC
-- Managed identities
-- Azure Storage Accounts
-- Blob versioning and immutable storage
-- Shared Access Signatures (SAS)
-- Recovery Services Vault
-- Azure Backup
-- Azure Monitor and Log Analytics
-- Diagnostic settings and alerting
-- Resource locks and tagging
-- Cost optimization
-- Git and GitHub
-- Technical documentation
-- Troubleshooting and problem solving
+- Bash scripting and modular script design
+- Three-tier infrastructure deployment on Azure
+- Virtual Networks, subnets, NSGs, and Load Balancer configuration
+- Linux Virtual Machine provisioning and management
+- Microsoft Entra ID, Managed Identity, and Azure RBAC
+- Azure Storage, blob versioning, and immutable storage
+- Azure Monitor, Log Analytics, and diagnostic settings
+- Azure Backup and Recovery Services Vault
+- Git, GitHub, and technical documentation
 ---
 ## Challenges and Lessons Learned
 
