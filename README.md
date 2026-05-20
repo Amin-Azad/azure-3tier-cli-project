@@ -117,7 +117,7 @@ Before running this project, ensure you have the following:
 az version
 az login
 az account show --output table
-
+```
 ### Git clone and Run 
 
 ```bash
@@ -178,7 +178,7 @@ Validation output is saved to:
 
 ```text
 docs/outputs/project-validation-output.txt
-
+```
 ---
 
 ## Cleanup
@@ -187,6 +187,7 @@ To remove all resources created by this project:
 
 ```bash
 bash scripts/teardown.sh
+```
 ---
 ## Skills Demonstrated
 
