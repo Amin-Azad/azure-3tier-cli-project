@@ -1,92 +1,46 @@
 # Azure 3-Tier Infrastructure Automation with Azure CLI & Bash
 
-> End-to-end Azure infrastructure deployment using Bash scripting and Azure CLI. This project provisions a complete 3-tier environment including networking, compute, storage, identity and access management, monitoring, and automated backup.
+![Azure](https://img.shields.io/badge/Microsoft%20Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
+![Bash](https://img.shields.io/badge/Bash-121011?style=for-the-badge&logo=gnu-bash&logoColor=white)
+![Azure CLI](https://img.shields.io/badge/Azure%20CLI-0089D6?style=for-the-badge&logo=microsoftazure&logoColor=white)
+
+> Production-style Azure infrastructure automation project that deploys a complete 3-tier environment using modular Bash scripts and Azure CLI.
 
 ---
 
-## ------------Project Description--------------------
+## Executive Summary
 
-This project demonstrates how to build and automate a complete 3-tier infrastructure in Microsoft Azure using Bash scripting and Azure CLI.
+This project demonstrates how a cloud engineer can provision, validate, and manage a complete Azure environment using Bash scripting and Azure CLI.
 
-The goal of the project was to simulate how a cloud engineer would provision, configure, validate, and document an Azure environment using reusable and idempotent scripts rather than manual portal-based deployment.
-
-The solution deploys a production-style environment consisting of:
-
-- A dedicated Resource Group
-- Virtual Network with segmented subnets for web, application, data, and management layers
-- Network Security Groups (NSGs) for traffic control
-- Standard Public Load Balancer
-- Two Linux virtual machines representing the Web and Application tiers
-- Azure Storage Account with Blob Containers and Azure File Share
-- Microsoft Entra ID security group for administrative access
-- User Assigned Managed Identity
-- Role-Based Access Control (RBAC) assignments
-- Log Analytics Workspace and Diagnostic Settings
-- Recovery Services Vault with automated VM backup
-- Resource Group delete lock for governance
-
-All components are deployed through modular scripts that can be executed independently or orchestrated using a single `deploy-all.sh` script.
-
-A companion `validate-project.sh` script performs a comprehensive post-deployment verification of all major Azure resources and saves the output to a structured report.
-
-This project demonstrates practical experience with:
-
-- Infrastructure automation using Azure CLI
-- Bash scripting and modular script design
-- Azure networking and compute services
-- Storage and access control
-- Monitoring and diagnostics
-- Backup and disaster recovery
-- Resource governance and protection
-- Idempotent deployment patterns
-
-The repository also includes architecture diagrams, validation reports, deployment logs, and screenshots to provide a complete and reproducible example of real-world Azure infrastructure automation.
-
-## 🏗️ Architecture Diagram
-
-```mermaid
-flowchart TD
-    A[User / Internet]
-    B[Public Load Balancer]
-    C[Web Tier<br>vm-web-dev<br>snet-web]
-    D[App Tier<br>vm-app-dev<br>snet-app]
-    E[Storage Tier<br>Storage Account<br>st3tierdev01]
-
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-
-    C --> F[Log Analytics Workspace]
-    D --> F
-
-    C --> G[Recovery Services Vault<br>VM Backup]
-    D --> G
-
-    H[Managed Identity] --> E
-    I[CloudAdmins Group<br>RBAC Reader] --> J[Resource Group<br>rg-3tier-dev]
-    K[Delete Lock] --> J
+The solution automates networking, compute, storage, identity, monitoring, backup, and governance resources in Microsoft Azure.
 
 ---
 
-## 📸 Project Screenshots
+## Architecture Diagram
+
+![Architecture Diagram](docs/images/architecture-diagram.png)
+
+---
+
+## Project Screenshots
 
 ### Deployment Execution
 
-![Deployment Output](docs/images/DeployAll-Output.PNG)
+![Deployment Output](docs/images/deployall-output.png)
 
-### Resource Group Overview
+### Azure Portal Resource Overview
 
-![Resource Group Overview](docs/images/Azure_portal_resources overview.PNG)
+![Resource Group Overview](docs/images/azure-portal-resources-overview.png)
 
 ### Validation Report
 
-![Validation Output](docs/images/Validation_outout_1.PNG)
-![Validation Output](docs/images/Validation_outout-2.PNG)
+![Validation Output 1](docs/images/validation-output-1.png)
+
+![Validation Output 2](docs/images/validation-output-2.png)
 
 ---
 
-## 🧱 Architecture Components
+## Architecture Components
 
 | Layer | Azure Services |
 |------|------|
@@ -96,41 +50,39 @@ flowchart TD
 | Identity | Entra ID Security Group, Managed Identity, RBAC |
 | Monitoring | Log Analytics Workspace, Diagnostic Settings |
 | Backup | Recovery Services Vault, Backup Policy |
-| Governance | Resource Group Delete Lock |
+| Governance | Resource Lock, Tags |
 
 ---
 
-## 🌐 Network Design
+## Network Design
 
 | Subnet | Address Space | Purpose |
 |------|------|------|
-| `snet-web` | `10.0.1.0/24` | Web tier |
-| `snet-app` | `10.0.2.0/24` | Application tier |
-| `snet-data` | `10.0.3.0/24` | Storage services |
-| `snet-mgmt` | `10.0.4.0/24` | Management and security |
+| `snet-web` | `10.0.1.0/24` | Internet-facing web tier |
+| `snet-app` | `10.0.2.0/24` | Internal application tier |
+| `snet-data` | `10.0.3.0/24` | Data and storage services |
+| `snet-mgmt` | `10.0.4.0/24` | Management and administration |
 
 ---
 
-## 📁 Project Structure
+## Repository Structure
 
 ```text
 azure-3tier-cli-project/
 ├── config/
 │   └── tags.json
-│
 ├── docs/
 │   ├── architecture-diagram.md
 │   ├── teardown.md
 │   ├── images/
 │   │   ├── architecture-diagram.png
-│   │   ├── DeployAll-Output.PNG
-│   │   ├── Azure_portal_resources_overview.PNG
-│   │   └── Validation_outout_1.PNG
-│   │
+│   │   ├── deployall-output.png
+│   │   ├── azure-portal-resources-overview.png
+│   │   ├── validation-output-1.png
+│   │   └── validation-output-2.png
 │   └── outputs/
 │       ├── deploy-all-output.txt
 │       └── project-validation-output.txt
-│
 ├── scripts/
 │   ├── 00-variables.sh
 │   ├── 01-resource-group.sh
@@ -141,21 +93,30 @@ azure-3tier-cli-project/
 │   ├── 06-monitoring.sh
 │   ├── 07-backup.sh
 │   └── teardown.sh
-│
 ├── .gitignore
 ├── deploy-all.sh
 ├── validate-project.sh
 └── README.md
-
 ## -----------------Quick Start--------------------------
 
-### Prerequisites
+## Prerequisites
 
-- Azure subscription
-- Azure CLI
-- Bash shell (Linux/macOS/WSL)
+Before running this project, ensure you have the following:
 
-### Deploy and Validate
+- An active Azure subscription
+- Azure CLI installed
+- Bash shell (Linux, macOS, or WSL2)
+- Contributor or Owner role in Azure
+- SSH key pair for Linux VM deployment
+
+### Verify Azure CLI Installation
+
+```bash
+az version
+az login
+az account show --output table
+
+### Quick Start
 
 ```bash
 git clone https://github.com/Amin-Azad/azure-3tier-cli-project.git
@@ -168,100 +129,270 @@ chmod +x deploy-all.sh validate-project.sh scripts/*.sh
 ./deploy-all.sh
 ./validate-project.sh
 
-## ---------------Deployment Workflow------------------
+## Deployment Workflow
 
 The `deploy-all.sh` script runs the following modules in sequence:
 
-1. Resource Group
+1. Resource Group and tags 
 2. Networking
 3. Compute
 4. Storage
-5. IAM and RBAC
-6. Monitoring
-7. Backup
+5. Identity and Access Management
+6. Monitoring & Diagnostic
+7. Backup and Recovery 
+
+---
+## Script Modules
+
+| Script | Purpose |
+|------|------|
+| `00-variables.sh` | Centralized project variables |
+| `01-resource-group.sh` | Creates the resource group and applies a delete lock |
+| `02-networking.sh` | Deploys the Virtual Network, subnets, Network Security Groups, and Public Load Balancer |
+| `03-compute.sh` | Deploys Linux virtual machines for the web and application tiers |
+| `04-storage.sh` | Creates the storage account, blob containers, and Azure File Share |
+| `05-iam.sh` | Creates the Microsoft Entra ID security group, managed identity, and RBAC assignments |
+| `06-monitoring.sh` | Configures Log Analytics Workspace and diagnostic settings |
+| `07-backup.sh` | Configures Recovery Services Vault and enables VM backups |
+| `teardown.sh` | Removes all project resources and cleanup dependencies |
 
 ---
 
-##----------------- Core Components---------------------------
+## Validation
 
-### Networking
-- Virtual Network with 4 subnets
-- Network Security Groups (NSGs)
-- Standard Public Load Balancer
+The `validate-project.sh` script verifies the following components:
 
-### Compute
-- `vm-web-dev` – Web Tier
-- `vm-app-dev` – Application Tier
-
-### Storage
-- Azure Storage Account
-- Blob Containers (`assets`, `logs`, `backups`, `uploads`)
-- Azure File Share
-
-### Identity & Access
-- `CloudAdmins` Microsoft Entra ID security group
-- User Assigned Managed Identity
-- RBAC role assignments
-
-### Monitoring
-- Log Analytics Workspace
-- Diagnostic Settings
-
-### Backup
-- Recovery Services Vault
-- Daily VM backups
-
-### Governance
-- Resource Group Delete Lock
-
----
-
-## -------------- Validation------------------
-
-The `validate-project.sh` script verifies all major resources, including:
-
-- Networking
+- Resource Group
+- Virtual Network and Subnets
+- Network Security Groups and Load Balancer
 - Virtual Machines
-- Storage
-- RBAC assignments
-- Monitoring
-- Backup
+- Storage resources
+- Managed Identity and RBAC assignments
+- Log Analytics Workspace
+- Recovery Services Vault and backup status
 - Resource Locks
 
-Deployment and validation outputs are saved under:
+Validation output is saved to:
 
 ```text
-docs/outputs/
+docs/outputs/project-validation-output.txt
 
-## -------------Cleanup--------------------------
 
-To remove all resources created by this project, run:
+## Cleanup
+
+To remove all resources created by this project:
 
 ```bash
 bash scripts/teardown.sh
 
-##---------------Key Skills Demonstrated-------------
+## Skills Demonstrated
+
 - Azure CLI automation
 - Bash scripting
-- Azure networking
-- Linux VM deployment
-- Azure Storage and RBAC
-- Managed Identities
-- Monitoring and diagnostics
+- Infrastructure as Code (IaC) principles
+- Three-tier architecture design
+- Virtual Networks (VNet) and subnet configuration
+- Network Security Groups (NSGs)
+- Azure Bastion
+- Azure Load Balancer
+- Azure Virtual Machines
+- Microsoft Entra ID and RBAC
+- Managed identities
+- Azure Storage Accounts
+- Blob versioning and immutable storage
+- Shared Access Signatures (SAS)
+- Recovery Services Vault
 - Azure Backup
-- Idempotent scripting
+- Azure Monitor and Log Analytics
+- Diagnostic settings and alerting
+- Resource locks and tagging
+- Cost optimization
+- Git and GitHub
+- Technical documentation
+- Troubleshooting and problem solving
 
-##-------------Future Improvements-----------
-Convert the deployment to Bicep
-Add Azure Bastion
-Integrate Azure Key Vault
-Add CI/CD with GitHub Actions
+## Challenges and Lessons Learned
+
+During the development of this project, several real-world challenges were encountered and resolved. These issues provided valuable hands-on experience with Azure administration, automation, and troubleshooting.
+
+### 1. Azure Resource Provider Registration
+
+When running the backup script, the deployment of the Recovery Services Vault failed because the required Azure resource provider was not registered in the subscription.
+
+**Error:**
+
+```text
+(MissingSubscriptionRegistration) The subscription is not registered to use namespace 'Microsoft.RecoveryServices'
+```
+
+**Solution:**
+
+```bash
+az provider register --namespace Microsoft.RecoveryServices
+```
+
+**Lesson Learned:**  
+Some Azure services require their resource providers to be registered before they can be deployed, especially in new subscriptions.
+
+---
+
+### 2. Azure Quota and SKU Limitations
+
+During deployment, some resources could not be created because of regional quota restrictions or unavailable SKUs.
+
+**Examples:**
+- VM sizes unavailable in the selected region
+- Insufficient vCPU quota
+
+**Solution:**
+
+```bash
+az vm list-skus \
+  --location westeurope \
+  --resource-type virtualMachines \
+  --output table
+
+az vm list-usage \
+  --location westeurope \
+  --output table
+```
+
+**Lesson Learned:**  
+Always verify SKU availability and subscription quotas before deploying infrastructure.
+
+---
+
+### 3. Resource Locks Blocking Deletion
+
+A `CanNotDelete` lock was applied to the Resource Group to protect the environment from accidental deletion. This also prevented automated cleanup.
+
+**Solution:**
+
+```bash
+az lock delete \
+  --name "lock-${RG_NAME}" \
+  --resource-group "$RG_NAME"
+```
+
+**Lesson Learned:**  
+Resource locks are an important governance feature, but teardown scripts must remove them before deleting resources.
+
+---
+
+### 4. Immutable Storage and Versioning
+
+When experimenting with immutable blob storage and versioning, containers could not be deleted until immutability settings were removed.
+
+**Lesson Learned:**  
+Immutability protects critical data from deletion or modification, but it also changes how cleanup operations must be handled.
+
+---
+
+### 5. Recovery Services Vault Regional Requirements
+
+Azure Backup requires that the Recovery Services Vault be located in the same region as the virtual machines being protected.
+
+**Lesson Learned:**  
+Certain Azure services have strict regional dependencies that must be considered during solution design.
+
+---
+
+### 6. Public IP SKU Compatibility
+
+Resources such as  Standard Load Balancer require a Standard SKU Public IP address.
+
+**Lesson Learned:**  
+Azure resources often have SKU dependencies. Selecting incompatible SKUs leads to deployment failures.
+
+---
+
+### 7. Git Push Conflicts
+
+Git pushes were rejected because the remote repository contained commits that were not present in the local branch.
+
+**Solution:**
+
+```bash
+git pull --rebase origin main
+git push origin main
+```
+
+**Lesson Learned:**  
+Always synchronize with the remote repository before pushing local changes.
+
+---
+
+### 8. Case Sensitivity in Image Paths
+
+Some screenshots did not appear in the `README.md` because file names and paths did not exactly match.
+
+**Lesson Learned:**  
+Markdown image references are case-sensitive. Use consistent naming conventions for all assets.
+
+---
+
+### 9. Cost Management During Development
+
+Running multiple virtual machines continuously can generate unnecessary costs.
+
+**Solution:**
+
+```bash
+az vm deallocate \
+  --resource-group "$RG_NAME" \
+  --name "$WEB_VM_NAME"
+
+az vm deallocate \
+  --resource-group "$RG_NAME" \
+  --name "$APP_VM_NAME"
+
+az vm deallocate \
+  --resource-group "$RG_NAME" \
+  --name "$DB_VM_NAME"
+```
+
+**Lesson Learned:**  
+Deallocating VMs preserves the environment while stopping compute charges.
+
+---
+
+### 10. Idempotent Automation
+
+All deployment scripts were designed to be rerunnable without causing failures if resources already existed.
+
+**Lesson Learned:**  
+Idempotency is a core principle of Infrastructure as Code and production-grade automation.
+
+---
+
+## Key Takeaways
+
+This project provided practical experience in:
+
+- Azure CLI automation
+- Infrastructure as Code principles
+- Resource governance with locks and tagging
+- Backup and disaster recovery
+- Monitoring and diagnostics
+- Cost optimization
+- Git and GitHub workflow
+- Troubleshooting real-world Azure deployment issues
+
+Building this end-to-end three-tier Azure environment significantly strengthened my hands-on skills as an Azure Administrator and aspiring Cloud Engineer.
+
+## Future Improvements
+- Convert the deployment to Bicep
+- Add Azure Bastion
+- Integrate Azure Key Vault
+- Add CI/CD with GitHub Actions
 
 
-##-----------------Author----------
+## Author
 
-Amin Azad
-AZ-104 Certified Azure Administrator
-M.Sc. in Computer Science, Technical University of Denmark (DTU)
-GitHub: https://github.com/Amin-Azad
-LinkedIn: https://www.linkedin.com/in/aminazad/
+- Amin Azad
+- AZ-104 Certified Azure Administrator
+- M.Sc. in Computer Science, Technical University of Denmark (DTU)
+- GitHub: https://github.com/Amin-Azad
+- LinkedIn: https://www.linkedin.com/in/azadamin079/
+
+
