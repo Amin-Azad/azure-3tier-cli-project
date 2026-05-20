@@ -1,0 +1,11 @@
+Variables loaded for project: 3tier, environment: dev, location: westeurope
+Starting CleanUp for rg-3tier-dev
+Checking resource group
+Location    Name
+----------  ------------
+westeurope  rg-3tier-dev
+Removing resource group locks
+Deleting lock: /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Authorization/locks/lock-rg-3tier-dev
+Deleting resource group
+CleanUp started successfully
+Resource group deletion is running in the background.
