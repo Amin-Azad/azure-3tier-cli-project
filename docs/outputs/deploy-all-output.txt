@@ -4,10 +4,10 @@ Resource group 'rg-3tier-dev' already exist - skipping
 Variables loaded for project: 3tier, environment: dev, location: westeurope
 Subnet     CIDR         NSG
 ---------  -----------  ----------------------------------------------------------------------------------------------------------------------------------------------
-snet-web   10.0.1.0/24  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-web-dev
-snet-app   10.0.2.0/24  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-app-dev
-snet-data  10.0.3.0/24  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-data-dev
-snet-mgmt  10.0.4.0/24  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-mgmt-dev
+snet-web   10.0.1.0/24  /subscriptions/<redacted>/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-web-dev
+snet-app   10.0.2.0/24  /subscriptions/<redacted>/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-app-dev
+snet-data  10.0.3.0/24  /subscriptions/<redacted>/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-data-dev
+snet-mgmt  10.0.4.0/24  /subscriptions/<redacted>/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-mgmt-dev
 Variables loaded for project: 3tier, environment: dev, location: westeurope
 Creating Public IP for Load Balancer
 Creating Load Balancer
@@ -38,9 +38,9 @@ st3tierdev01  westeurope  Standard_LRS
 Storage resources created successfully.
 Variables loaded for project: 3tier, environment: dev, location: westeurope
 Creating Security Group
-Group ID: 722ae55a-fd52-455b-91cf-25b60962cc3a
+Group ID: <redacted-guid>
 Creating User Assigned Managed Identity
-Managed Identity Principal ID: 44fa50c4-14db-4c16-95f7-573204ed7520
+Managed Identity Principal ID: <redacted-guid>
 Assigning Storage Blob Data Contributor
 Assigning Reader Role to CloudAdmins Group
 IAM configuration completed successfully.
