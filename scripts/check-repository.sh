@@ -26,12 +26,14 @@ done
 
 bash -n deploy-all.sh validate-project.sh scripts/*.sh
 
-if grep -RInE   --exclude='*.png'   --exclude='*.PNG'   --exclude='package-lock.json'   '(/subscriptions/[0-9a-fA-F-]{36}|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})'   README.md docs scripts deploy-all.sh validate-project.sh; then
+if grep -RInE   --exclude='*.png'   --exclude='*.PNG'   --exclude='check-repository.sh'   '(/subscriptions/[0-9a-fA-F-]{36}|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})'   README.md docs scripts deploy-all.sh validate-project.sh; then
   echo "ERROR: Azure or Entra GUID found in tracked project text."
   exit 1
 fi
 
-if grep -RInE   --exclude='*.png'   --exclude='*.PNG'   '(sig=|AccountKey=|SharedAccessSignature=)'   README.md docs scripts deploy-all.sh validate-project.sh; then
+credential_pattern='(si''g=|Account''Key=|SharedAccess''Signature=)'
+
+if grep -RInE   --exclude='*.png'   --exclude='*.PNG'   --exclude='check-repository.sh'   "$credential_pattern"   README.md docs scripts deploy-all.sh validate-project.sh; then
   echo "ERROR: possible credential material found in tracked project text."
   exit 1
 fi
