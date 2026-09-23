@@ -1,59 +1,130 @@
-# Azure 3-Tier Infrastructure Automation with Azure CLI and Bash
+# Azure 3-Tier CLI Project
 
-[![Azure](https://img.shields.io/badge/Microsoft%20Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)](https://azure.microsoft.com/)
-[![Bash](https://img.shields.io/badge/Bash-121011?style=for-the-badge&logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
-[![Azure CLI](https://img.shields.io/badge/Azure%20CLI-0089D6?style=for-the-badge&logo=microsoftazure&logoColor=white)](https://learn.microsoft.com/cli/azure/)
+I built this project to practice provisioning Azure infrastructure directly with the Azure CLI and Bash instead of starting with an IaC language.
 
-A complete three-tier Azure environment provisioned, validated and torn down using modular Bash scripts and the Azure CLI.
+The repository creates a small three-tier-style environment with separate web, application, data and management subnets. It also includes identity, monitoring, backup, validation and cleanup scripts so I could test the whole resource lifecycle in a real Azure subscription.
 
-The project automates networking, compute, storage, identity, monitoring, backup and governance — with a matching validation script and cleanup path, so the environment can be created and removed repeatably.
+> **Status:** deployed and validated in Azure, then cleaned up to avoid ongoing cost.
 
----
+![Azure 3-tier architecture](docs/images/architecture-diagram.png)
+
+## What I deployed
+
+The environment was deployed in West Europe and included:
+
+- one Virtual Network with four subnets;
+- separate Network Security Groups for web, app, data and management traffic;
+- a Standard public Load Balancer and Standard public IP;
+- one Linux web VM running Nginx;
+- one private Linux application VM;
+- a Storage account with Blob containers and an Azure File Share;
+- a user-assigned Managed Identity with Storage Blob Data Contributor;
+- an Entra ID security group with Reader access at resource-group scope;
+- Log Analytics and diagnostic settings;
+- a Recovery Services Vault and VM backup;
+- tags and a CanNotDelete resource lock.
+
+The project is an infrastructure exercise rather than a production application. The network rules model traffic between tiers, but there is no full application or database workload behind those tiers.
 
 ## Architecture
 
-![Architecture Diagram](docs/images/architecture-diagram.png)
-
-| Layer | Azure Services |
+| Layer | Azure resources |
 | --- | --- |
-| Networking | Virtual Network, Subnets, NSGs, Public IP, Load Balancer |
-| Compute | Linux Virtual Machines |
-| Storage | Storage Account, Blob Containers, File Share |
-| Identity | Entra ID Security Group, Managed Identity, RBAC |
-| Monitoring | Log Analytics Workspace, Diagnostic Settings |
-| Backup | Recovery Services Vault, Backup Policy |
-| Governance | Resource Lock, Tags |
+| Entry | Standard Public IP, Standard Load Balancer |
+| Web | Linux VM, Nginx, web subnet and NSG |
+| Application | Linux VM, private app subnet and NSG |
+| Data | Storage Account, Blob containers, File Share, data subnet and NSG |
+| Identity | Entra ID group, user-assigned Managed Identity, RBAC |
+| Operations | Log Analytics, diagnostic settings, Recovery Services Vault |
+| Governance | Resource lock and tags |
 
-### Network design
+### Network layout
 
-| Subnet | Address Space | Purpose |
+| Subnet | Address space | Purpose |
 | --- | --- | --- |
-| `snet-web` | `10.0.1.0/24` | Internet-facing web tier |
-| `snet-app` | `10.0.2.0/24` | Internal application tier |
-| `snet-data` | `10.0.3.0/24` | Data and storage services |
-| `snet-mgmt` | `10.0.4.0/24` | Management and administration |
+| `snet-web` | `10.0.1.0/24` | Web tier |
+| `snet-app` | `10.0.2.0/24` | Application tier |
+| `snet-data` | `10.0.3.0/24` | Data/service tier |
+| `snet-mgmt` | `10.0.4.0/24` | Management subnet |
 
----
+The web NSG allows HTTP/HTTPS from the Internet. The app NSG only allows port 8080 from the web subnet. The data NSG only allows ports 443 and 445 from the app subnet. SSH is restricted to the detected administrator public IP on the management NSG.
 
-## Deployment evidence
+The current VM layout does not use the management subnet for a jump host, so that subnet is part of the network design rather than an active administration path.
 
-**Deployment execution**
-![Deployment Output](docs/images/deployall-output.PNG)
+## Deployment flow
 
-**Azure portal resource overview**
-![Resource Group Overview](docs/images/azure-portal-resources-overview.PNG)
+The scripts are deliberately small and separated by responsibility:
 
-**Validation report**
-![Validation Output 1](docs/images/validation-output-1.PNG)
-![Validation Output 2](docs/images/validation-output-2.PNG)
+```text
+deploy-all.sh
+    ↓
+resource group + lock
+    ↓
+networking + NSGs
+    ↓
+load balancer + VMs
+    ↓
+storage
+    ↓
+identity + RBAC
+    ↓
+monitoring
+    ↓
+backup
+    ↓
+validate-project.sh
+    ↓
+cleanup.sh
+```
 
-Raw output is preserved in `docs/outputs/`.
+The main scripts are:
 
----
+| Script | Purpose |
+| --- | --- |
+| `00-variables.sh` | Shared names, region, CIDRs and tags |
+| `01-resource-group.sh` | Resource group and delete lock |
+| `02-networking.sh` | VNet, subnets and NSGs |
+| `03-compute.sh` | Public IP, Load Balancer and Linux VMs |
+| `04-storage.sh` | Storage account, Blob containers and File Share |
+| `05-iam.sh` | Entra group, Managed Identity and RBAC |
+| `06-monitoring.sh` | Log Analytics and diagnostic settings |
+| `07-backup.sh` | Recovery Services Vault and VM protection |
+| `validate-project.sh` | Live Azure validation |
+| `cleanup.sh` | Lock removal and resource-group cleanup |
 
-## Quick start
+## Evidence
 
-**Prerequisites:** an active Azure subscription · Azure CLI · Bash (Linux, macOS or WSL2) · Contributor or Owner role · an SSH key pair for the Linux VMs.
+I kept the deployment and validation evidence in the repository instead of leaving the Azure environment running.
+
+![Deployment output](docs/images/deployall-output.PNG)
+
+![Azure resource overview](docs/images/azure-portal-resources-overview.PNG)
+
+The validation script checked the resource group, VNet, subnets, NSGs, public IP, Load Balancer, VMs, Storage, identity and RBAC, Log Analytics, diagnostic settings, Recovery Services Vault, backup protection and resource locks.
+
+The full evidence is under [docs/outputs](docs/outputs/). Identifiers that are not useful to a reviewer are redacted.
+
+## Problems I hit
+
+Using a real subscription exposed several things I would not have learned from writing the commands alone.
+
+**Provider registration.** Azure Backup initially failed because `Microsoft.RecoveryServices` was not registered.
+
+**Quota and SKU availability.** VM size availability and regional vCPU quota affected which compute SKU I could use.
+
+**Load Balancer compatibility.** A Standard Load Balancer requires a Standard public IP.
+
+**Backup placement.** The Recovery Services Vault has to be in the same region as the VMs it protects.
+
+**Resource locks.** The delete lock worked as expected, but cleanup had to remove it before deleting the resource group.
+
+**Storage lifecycle.** Versioning and retention settings change how storage cleanup behaves.
+
+These issues were useful because I had to troubleshoot the Azure control plane rather than only write a happy-path script.
+
+## Run locally
+
+Prerequisites: Azure CLI, Bash, an Azure subscription, an SSH key pair and enough permission to create the resources used by the scripts.
 
 ```bash
 git clone https://github.com/Amin-Azad/azure-3tier-cli-project.git
@@ -68,63 +139,14 @@ chmod +x deploy-all.sh validate-project.sh scripts/*.sh
 ./validate-project.sh
 ```
 
-Remove everything when finished:
+Clean up when finished:
 
 ```bash
 bash scripts/cleanup.sh
 ```
 
----
+## Repository checks
 
-## Script modules
+Pull requests run lightweight validation for Bash syntax, repository hygiene and basic project structure. The live Azure validation remains a separate step because it requires an authenticated subscription and deployed resources.
 
-`deploy-all.sh` runs these in sequence. The scripts are split by responsibility and share a central configuration file.
-
-| Script | Purpose |
-| --- | --- |
-| `00-variables.sh` | Centralized project variables |
-| `01-resource-group.sh` | Creates the resource group and applies a delete lock |
-| `02-networking.sh` | Virtual Network, subnets, NSGs and public Load Balancer |
-| `03-compute.sh` | Linux virtual machines for the web and application tiers |
-| `04-storage.sh` | Storage account, blob containers and Azure File Share |
-| `05-iam.sh` | Entra ID security group, managed identity and RBAC assignments |
-| `06-monitoring.sh` | Log Analytics Workspace and diagnostic settings |
-| `07-backup.sh` | Recovery Services Vault and VM backup |
-| `cleanup.sh` | Removes all project resources and their dependencies |
-
-`validate-project.sh` verifies the resource group, VNet and subnets, NSGs and Load Balancer, virtual machines, storage resources, managed identity and RBAC assignments, Log Analytics, Recovery Services Vault and backup status, and resource locks. Output is written to `docs/outputs/project-validation-output.txt`.
-
----
-
-## Problems encountered and how they were resolved
-
-Real Azure behaviour that static planning did not predict:
-
-**Unregistered resource provider.** The Recovery Services Vault failed with `MissingSubscriptionRegistration` for `Microsoft.RecoveryServices`. New subscriptions do not have every provider registered by default — resolved with `az provider register`.
-
-**Quota and SKU limits.** Some VM sizes were unavailable in the selected region and vCPU quota was insufficient. I used `az vm list-skus` and `az vm list-usage` to check available VM sizes and regional quota before retrying.
-
-**Resource locks blocking teardown.** The `CanNotDelete` lock protecting the resource group also blocked automated cleanup. The teardown script now removes locks before deleting resources — governance controls have to be accounted for in both directions.
-
-**Immutable storage.** Containers with immutability and versioning enabled could not be deleted until those settings were removed, which changes how cleanup must be sequenced.
-
-**Regional dependencies.** Azure Backup requires the Recovery Services Vault to sit in the same region as the VMs it protects.
-
-**SKU compatibility.** A Standard Load Balancer requires a Standard SKU public IP; mismatched SKUs fail at deployment time.
-
-**Cost control during development.** Running VMs continuously generates avoidable cost. `az vm deallocate` preserves the environment while stopping compute charges.
-
----
-
-## Skills demonstrated
-
-Azure CLI automation · modular Bash scripting · three-tier network design · VNets, subnets, NSGs and Load Balancer · Linux VM provisioning · Entra ID, Managed Identity and RBAC · Azure Storage with blob versioning and immutability · Azure Monitor, Log Analytics and diagnostic settings · Azure Backup and Recovery Services Vault · resource governance with locks and tagging · troubleshooting live Azure deployment failures
-
-## Possible extensions
-
-Convert the deployment to Bicep · add Azure Bastion · integrate Azure Key Vault · add CI/CD with GitHub Actions
-
----
-
-**Amin Azad** — AZ-104 Certified Azure Administrator · M.Sc. Computer Science and Engineering, DTU
-[GitHub](https://github.com/Amin-Azad) · [LinkedIn](https://www.linkedin.com/in/azadamin079/)
+This project is intentionally kept as an **Azure CLI/Bash portfolio project**. My other Azure repositories cover Bicep, Terraform, Kubernetes, Helm and GitOps, so I do not plan to convert this repository into another IaC project.

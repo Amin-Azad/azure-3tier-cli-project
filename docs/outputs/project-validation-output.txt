@@ -28,10 +28,10 @@ pip-lb-dev                                            Microsoft.Network/publicIP
 lb-web-dev                                            Microsoft.Network/loadBalancers                   westeurope
 vm-web-devVMNic                                       Microsoft.Network/networkInterfaces               westeurope
 vm-web-dev                                            Microsoft.Compute/virtualMachines                 westeurope
-vm-web-dev_OsDisk_1_0bdd80625f3b4b38a6d71976ede5534d  Microsoft.Compute/disks                           westeurope
+vm-web-dev_OsDisk_1_<redacted>  Microsoft.Compute/disks                           westeurope
 vm-app-devVMNic                                       Microsoft.Network/networkInterfaces               westeurope
 vm-app-dev                                            Microsoft.Compute/virtualMachines                 westeurope
-vm-app-dev_OsDisk_1_1c32fc1c0f8248048051d6dc8f1dc8ae  Microsoft.Compute/disks                           westeurope
+vm-app-dev_OsDisk_1_<redacted>  Microsoft.Compute/disks                           westeurope
 vm-web-dev/customScript                               Microsoft.Compute/virtualMachines/extensions      westeurope
 st3tierdev01                                          Microsoft.Storage/storageAccounts                 westeurope
 id-3tier-dev                                          Microsoft.ManagedIdentity/userAssignedIdentities  westeurope
@@ -48,10 +48,10 @@ vnet-3tier-dev  westeurope  10.0.0.0/16
 
 Name       AddressPrefix    NSG
 ---------  ---------------  ----------------------------------------------------------------------------------------------------------------------------------------------
-snet-web   10.0.1.0/24      /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-web-dev
-snet-app   10.0.2.0/24      /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-app-dev
-snet-data  10.0.3.0/24      /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-data-dev
-snet-mgmt  10.0.4.0/24      /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-mgmt-dev
+snet-web   10.0.1.0/24      /subscriptions/<redacted>/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-web-dev
+snet-app   10.0.2.0/24      /subscriptions/<redacted>/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-app-dev
+snet-data  10.0.3.0/24      /subscriptions/<redacted>/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-data-dev
+snet-mgmt  10.0.4.0/24      /subscriptions/<redacted>/resourceGroups/rg-3tier-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-mgmt-dev
 
 5. --------------------------Network Security Groups---------------
 
@@ -112,7 +112,7 @@ appshare
 
 Name          Location    PrincipalId
 ------------  ----------  ------------------------------------
-id-3tier-dev  westeurope  44fa50c4-14db-4c16-95f7-573204ed7520
+id-3tier-dev  westeurope  <redacted-guid>
 
 14. ------------------IAM / RBAC Role Assignments--------
 
@@ -130,13 +130,13 @@ law-3tier-dev  westeurope  30
 
 Name               WorkspaceId
 -----------------  ------------------------------------------------------------------------------------------------------------------------------------------------
-diag-st3tierdev01  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.OperationalInsights/workspaces/law-3tier-dev
+diag-st3tierdev01  /subscriptions/<redacted>/resourceGroups/rg-3tier-dev/providers/Microsoft.OperationalInsights/workspaces/law-3tier-dev
 
 17. --------------------Load Balancer Diagnostic Settings----------------------------
 
 Name             WorkspaceId
 ---------------  ------------------------------------------------------------------------------------------------------------------------------------------------
-diag-lb-web-dev  /subscriptions/d3da25e5-680e-459c-99cf-0c4be70f4aad/resourceGroups/rg-3tier-dev/providers/Microsoft.OperationalInsights/workspaces/law-3tier-dev
+diag-lb-web-dev  /subscriptions/<redacted>/resourceGroups/rg-3tier-dev/providers/Microsoft.OperationalInsights/workspaces/law-3tier-dev
 
 18. ---------------------Recovery Services Vault----------------------
 

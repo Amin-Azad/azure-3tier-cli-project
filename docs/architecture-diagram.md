@@ -1,24 +1,27 @@
 # Azure 3-Tier Architecture
 
+This diagram shows the infrastructure layout created by the scripts. The web-to-app and app-to-data lines represent the network paths allowed by the NSGs; the project does not include a complete application using those paths.
+
 ```mermaid
 flowchart TD
     A[User / Internet]
-    B[Public Load Balancer]
-    C[Web Tier<br>vm-web-dev<br>snet-web]
-    D[App Tier<br>vm-app-dev<br>snet-app]
-    E[Storage Tier<br>Storage Account<br>st3tierdev01]
+    B[Standard Public Load Balancer]
+    C[Web Tier<br/>Linux VM + Nginx<br/>snet-web]
+    D[App Tier<br/>Linux VM<br/>snet-app]
+    E[Data / Service Tier<br/>Storage Account<br/>snet-data]
 
     A --> B
     B --> C
-    C --> D
-    D --> E
+    C -. allowed port 8080 .-> D
+    D -. allowed ports 443 / 445 .-> E
 
-    C --> F[Log Analytics Workspace]
-    D --> F
+    F[Log Analytics] --> C
+    F --> B
 
-    C --> G[Recovery Services Vault<br>VM Backup]
-    D --> G
+    G[Recovery Services Vault] --> C
+    G --> D
 
-    H[Managed Identity] --> E
-    I[CloudAdmins Group<br>RBAC Reader] --> J[Resource Group<br>rg-3tier-dev]
-    K[Delete Lock] --> J
+    H[User-assigned Managed Identity<br/>Storage Blob Data Contributor] --> E
+    I[CloudAdmins Group<br/>Reader] --> J[Resource Group]
+    K[CanNotDelete Lock] --> J
+```
