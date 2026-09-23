@@ -5,31 +5,31 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/00-variables.sh"
 
-echo "Starting CleanUp for $RG_NAME"
+echo "Starting cleanup for $RG_NAME"
 
-echo "Checking resource group"
-az group show --name "$RG_NAME" --output table
-
-echo "Removing resource group locks"
-LOCK_IDS=$(az lock list \
-  --resource-group "$RG_NAME" \
-  --query "[].id" \
-  --output tsv)
-
-if [ -z "$LOCK_IDS" ]; then
-  echo "No locks found."
-else
-  for LOCK_ID in $LOCK_IDS; do
-    echo "Deleting lock: $LOCK_ID"
-    az lock delete --ids "$LOCK_ID"
-  done
+if ! az group show --name "$RG_NAME" --output none 2>/dev/null; then
+  echo "Resource group does not exist. Nothing to clean up."
+  exit 0
 fi
 
-echo "Deleting resource group"
-az group delete \
-  --name "$RG_NAME" \
-  --yes \
-  --no-wait
+echo "Removing resource group locks"
 
-echo "CleanUp started successfully"
-echo "Resource group deletion is running in the background."
+mapfile -t LOCK_IDS < <(
+  az lock list     --resource-group "$RG_NAME"     --query "[].id"     --output tsv
+)
+
+for LOCK_ID in "${LOCK_IDS[@]}"; do
+  echo "Deleting lock: $LOCK_ID"
+  az lock delete --ids "$LOCK_ID"
+done
+
+echo "Deleting resource group"
+
+az group delete   --name "$RG_NAME"   --yes
+
+if az group exists --name "$RG_NAME" | grep -qi '^true$'; then
+  echo "ERROR: resource group still exists after cleanup."
+  exit 1
+fi
+
+echo "Cleanup completed. Resource group removed."
